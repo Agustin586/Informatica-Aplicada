@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
+#include <time.h>
+#include "Manejo_Archivos.h"
 
 #define CANT_LINEAS	2	//PARA PROBAR
 #define CANT_CARACT 6
@@ -68,10 +71,16 @@ void Reordenar_Lista(TLE_lista *lista);
 //Creamos una funcion que maneje los estados
 void Estados(int *est_archivo,int *est_linea);
 
-int main(void) {
+//Inicializacion de los estados
+void Init_estados(int *est_archivos,int *est_linea);
+
+
+int main(void){
+	srand(time(NULL));
 
 	setbuf(stdout,0);
-	int Estado_archivo=Generar_Archivo,Estado_linea=Reposo_Linea;
+
+	int Estado_archivo,Estado_linea;
 
 	char prueba[]={'a','d','b','a','b','l'};
 
@@ -81,67 +90,82 @@ int main(void) {
 	Init_lista(lista);
 
 	//Inserta el primer nodo
-	if(Insertar_en_ListaVacia(lista, prueba[0])==0); //Continua si fue bien creado
-
-	for(int i=1;i<CANT_CARACT;i++){
-		Insertar_en_FinLista(lista, lista -> final, prueba[i]);
-	}
-
-	Imprimir_Lista(lista);
-
-	Reordenar_Lista(lista);
-
-	printf("\n");
-	Imprimir_Lista(lista);
-
-//	while(1){
-//		Estados(&Estado_archivo,&Estado_linea);
+//	if(Insertar_en_ListaVacia(lista, prueba[0])==0); //Continua si fue bien creado
+//
+//	for(int i=1;i<CANT_CARACT;i++){
+//		Insertar_en_FinLista(lista, lista -> final, prueba[i]);
 //	}
+//
+//	Imprimir_Lista(lista);
+//
+//	Reordenar_Lista(lista);
+//
+//	printf("\n");
+//	Imprimir_Lista(lista);
+
+	//Inicializamos los estados con los procesos iniciales
+	Init_estados(&Estado_archivo, &Estado_linea);
+
+	//Bucle que se repite hasta leer todas las lineas
+	while(1){
+		Estados(&Estado_archivo,&Estado_linea);
+		break;	//Lo realiza una vez para crear el archivo
+	}
 
 	return EXIT_SUCCESS;
 }
 
+void Init_estados(int *est_archivos,int *est_linea){
+
+	*est_archivos = Generar_Archivo;
+	*est_linea = Reposo_Linea;
+
+	return;
+}
+
 void Estados(int *est_archivo,int *est_linea){
 	switch(*est_archivo){
-		case Reposo_Archivo:
-		{
+		//No se hace nada que en vacío
+		case Reposo_Archivo:{
 			break;
 		}
-		case Generar_Archivo:
-		{
+		case Generar_Archivo:{
+			Generar_archivo();
+
 			*est_archivo = Cargar_Archivo;
+			break;
 		}
-		case Cargar_Archivo:
-		{
+		case Cargar_Archivo:{
 			//Condicion para que cambie
 			*est_archivo = Procesar_Linea_Archivo;
+			break;
 		}
-		case Procesar_Linea_Archivo:
-		{
+		case Procesar_Linea_Archivo:{
 			*est_archivo = 0;
 			//est_archivo = Procesar_Linea_Archivo;
 			*est_linea = Procesar_Linea;
+			break;
 		}
 		default: break;
 	}
 	switch(*est_linea){
-		case Reposo_Linea:
-		{
+		case Reposo_Linea:{
 			break;
 		}
-		case Procesar_Linea:
-		{
+		case Procesar_Linea:{
 			*est_linea = Ordenar_Linea;
+			break;
 		}
-		case Ordenar_Linea:
-		{
+		case Ordenar_Linea:{
+
 			*est_linea = Mostrar_Linea;
+			break;
 		}
-		case Mostrar_Linea:
-		{
+		case Mostrar_Linea:{
 			*est_linea = Reposo_Linea;
 			*est_archivo = Procesar_Linea_Archivo;
 			//Debemos liberar la memoria --> Free
+			break;
 		}
 		default: break;
 	}
