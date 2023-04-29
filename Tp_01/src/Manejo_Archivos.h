@@ -15,6 +15,15 @@
 #define RANGO_CANT_CARACTERES_MAX	100
 #define REPETICION	100
 
+typedef struct{
+	FILE *archivo_;
+	uint16_t total_lineas;
+	uint16_t lineas_procesadas;
+	int pos_final;
+	char *nombre_archivo;
+	char *linea_leida;
+}Tarchivo_dato;
+
 //Genera valores aleatorios
 int Valor_aleatorio(int min,int max);
 
@@ -24,4 +33,8 @@ void Cadena_aleatoria(int longitud,char destino[]);
 //Carga todo en el archivo
 void Generar_archivo(void);
 
-#endif MANEJO_ARCHIVOS_H
+//Leemos el archivo linea por linea
+void LeerLinea_archivo(Tarchivo_dato *archivo);
+void Linea_archivo(Tarchivo_dato *archivo);
+
+#endif //MANEJO_ARCHIVOS_H

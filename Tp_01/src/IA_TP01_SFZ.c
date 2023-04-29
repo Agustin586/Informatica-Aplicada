@@ -23,7 +23,8 @@ typedef enum{
 	Reposo_Archivo,
 	Generar_Archivo,
 	Cargar_Archivo,
-	Procesar_Linea_Archivo
+	Procesar_Linea_Archivo,
+	Fin_Archivo
 }Est_Archivos_t;
 
 typedef enum{
@@ -69,11 +70,13 @@ TLE_lista *CrearLista();
 void Reordenar_Lista(TLE_lista *lista);
 
 //Creamos una funcion que maneje los estados
-void Estados(int *est_archivo,int *est_linea);
+void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo);
 
 //Inicializacion de los estados
 void Init_estados(int *est_archivos,int *est_linea);
 
+
+uint8_t fin_programa = 0;
 
 int main(void){
 	srand(time(NULL));
@@ -82,9 +85,12 @@ int main(void){
 
 	int Estado_archivo,Estado_linea;
 
-	char prueba[]={'a','d','b','a','b','l'};
+	//char prueba[]={'a','d','b','a','b','l'};
 
 	TLE_lista *lista=CrearLista();		//Creamos la lista de los nodos
+	Tarchivo_dato *psArchivo;			//pointer struct Archivo
+
+	strcpy(psArchivo -> nombre_archivo,"datos.txt");
 
 	//Incializacion de la lista
 	Init_lista(lista);
@@ -108,8 +114,8 @@ int main(void){
 
 	//Bucle que se repite hasta leer todas las lineas
 	while(1){
-		Estados(&Estado_archivo,&Estado_linea);
-		break;	//Lo realiza una vez para crear el archivo
+		if(!fin_programa)	Estados(&Estado_archivo,&Estado_linea,psArchivo);
+		else 				break;
 	}
 
 	return EXIT_SUCCESS;
@@ -123,27 +129,38 @@ void Init_estados(int *est_archivos,int *est_linea){
 	return;
 }
 
-void Estados(int *est_archivo,int *est_linea){
+void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo){
 	switch(*est_archivo){
-		//No se hace nada que en vacío
+		//No se hace nada queda en vacío
 		case Reposo_Archivo:{
 			break;
 		}
 		case Generar_Archivo:{
+			printf("Generamos el archivo aleatorio");
 			Generar_archivo();
 
-			*est_archivo = Cargar_Archivo;
+			*est_archivo = Procesar_Linea_Archivo;
 			break;
 		}
+		//Esta no realiza nada --> la dejo para ver si puedo meter algo
+		//sino la saco
 		case Cargar_Archivo:{
+
 			//Condicion para que cambie
 			*est_archivo = Procesar_Linea_Archivo;
 			break;
 		}
 		case Procesar_Linea_Archivo:{
-			*est_archivo = 0;
-			//est_archivo = Procesar_Linea_Archivo;
-			*est_linea = Procesar_Linea;
+			LeerLinea_archivo(archivo);
+			Linea_archivo(archivo);
+
+			*est_archivo = Fin_Archivo;
+			*est_linea = Reposo_Linea;
+			break;
+		}
+		case Fin_Archivo:{
+			fin_programa = 1;
+
 			break;
 		}
 		default: break;
