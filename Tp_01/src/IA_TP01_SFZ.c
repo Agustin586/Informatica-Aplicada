@@ -22,7 +22,7 @@
 typedef enum{
 	Reposo_Archivo,
 	Generar_Archivo,
-	Cargar_Archivo,
+	Total_Linea_Archivo,
 	Procesar_Linea_Archivo,
 	Fin_Archivo
 }Est_Archivos_t;
@@ -35,18 +35,18 @@ typedef enum{
 }Est_Linea_t;
 
 //Cada elemento de la lista
-typedef struct Nodo{
-	uint16_t frecuencia;
-	char letra;
-	struct Nodo *sgt;
-}TNodo;
+//typedef struct Nodo{
+//	uint16_t frecuencia;
+//	char letra;
+//	struct Nodo *sgt;
+//}TNodo;
 
 //Lista de las estructuras enlazadas
-typedef struct LE{
-	TNodo *final;
-	TNodo *inicio;
-	int tam;
-}TLE_lista;
+//typedef struct LE{
+//	TNodo *final;
+//	TNodo *inicio;
+//	int tam;
+//}TLE_lista;
 
 //Inicialización de la lista
 void Init_lista (TLE_lista * lista);
@@ -66,11 +66,17 @@ void Destruir_Lista(TLE_lista *lista);
 //Creamos la lista
 TLE_lista *CrearLista();
 
+//Borar nodo al inicio
+void Borrar_Nodo_Alinicio(TLE_lista *lista);
+
+//Borar lista
+void Destruir_Lista(TLE_lista *lista);
+
 //Reordenamos la lista
 void Reordenar_Lista(TLE_lista *lista);
 
 //Creamos una funcion que maneje los estados
-void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo);
+void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo,TLE_lista *lista);
 
 //Inicializacion de los estados
 void Init_estados(int *est_archivos,int *est_linea);
@@ -114,7 +120,7 @@ int main(void){
 
 	//Bucle que se repite hasta leer todas las lineas
 	while(1){
-		if(!fin_programa)	Estados(&Estado_archivo,&Estado_linea,psArchivo);
+		if(!fin_programa)	Estados(&Estado_archivo,&Estado_linea,psArchivo,lista);
 		else 				break;
 	}
 
@@ -129,7 +135,7 @@ void Init_estados(int *est_archivos,int *est_linea){
 	return;
 }
 
-void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo){
+void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo,TLE_lista *lista){
 	switch(*est_archivo){
 		//No se hace nada queda en vacío
 		case Reposo_Archivo:{
@@ -139,23 +145,22 @@ void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo){
 			printf("Generamos el archivo aleatorio");
 			Generar_archivo();
 
-			*est_archivo = Procesar_Linea_Archivo;
+			*est_archivo = Total_Linea_Archivo;
 			break;
 		}
 		//Esta no realiza nada --> la dejo para ver si puedo meter algo
 		//sino la saco
-		case Cargar_Archivo:{
+		case Total_Linea_Archivo:{
+			LeerLinea_archivo(archivo);
 
-			//Condicion para que cambie
 			*est_archivo = Procesar_Linea_Archivo;
 			break;
 		}
 		case Procesar_Linea_Archivo:{
-			LeerLinea_archivo(archivo);
 			Linea_archivo(archivo);
 
-			*est_archivo = Fin_Archivo;
-			*est_linea = Reposo_Linea;
+			*est_archivo = Reposo_Archivo;	//Espera que se procese la linea
+			*est_linea = Procesar_Linea;	//Procesa la linea en otro estado dedica a eso
 			break;
 		}
 		case Fin_Archivo:{
@@ -170,6 +175,8 @@ void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo){
 			break;
 		}
 		case Procesar_Linea:{
+			Procesar_LineaArchivo(archivo,lista);
+
 			*est_linea = Ordenar_Linea;
 			break;
 		}
@@ -179,8 +186,14 @@ void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo){
 			break;
 		}
 		case Mostrar_Linea:{
-			*est_linea = Reposo_Linea;
-			*est_archivo = Procesar_Linea_Archivo;
+
+			if(archivo -> total_lineas != archivo -> lineas_procesadas){
+				*est_linea = Reposo_Linea;				//Vuelve a esperar a que se lea la siguiente linea
+				*est_archivo = Procesar_Linea_Archivo;	//Vuelve a procesarla
+			}
+			else{
+				*est_archivo = Fin_Archivo;
+			}
 			//Debemos liberar la memoria --> Free
 			break;
 		}
@@ -253,6 +266,27 @@ int Insertar_en_FinLista(TLE_lista *lista,TNodo * actual,char dato){
 	}
 
 	return 0;
+}
+
+void Borrar_Nodo_Alinicio(TLE_lista *lista){
+	TNodo *sup_nodo;
+
+	sup_nodo = lista -> inicio;
+	lista -> inicio = lista -> inicio -> sgt;
+
+	if(lista -> tam == 1)	lista -> final = NULL;
+
+	free((sup_nodo -> frecuencia));
+	free((sup_nodo -> letra));
+	lista -> tam--;
+
+	return;
+}
+
+void Destruir_Lista(TLE_lista *lista){
+	while(lista -> tam > 0){
+		Borrar_Nodo_Alinicio(lista);
+	}
 }
 
 void Imprimir_Lista(TLE_lista *lista){

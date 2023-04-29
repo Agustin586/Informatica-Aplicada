@@ -53,6 +53,8 @@ void LeerLinea_archivo(Tarchivo_dato *archivo){
 	//FILE *archivo;
 
 	archivo -> lineas_procesadas = 0;
+	archivo -> total_lineas = 0;
+
 	archivo -> archivo_ = fopen(archivo -> nombre_archivo,"r");
 
 	//Lee la cantidad de lineas totales
@@ -83,34 +85,64 @@ void LeerLinea_archivo(Tarchivo_dato *archivo){
 
 
 void Linea_archivo(Tarchivo_dato *archivo){
-	char letra,*cadena;
-	uint16_t cont=1;
+	char letra;
 
-	fseek(archivo->archivo_,archivo->pos_final,SEEK_CUR);
+	//Mostramos en que linea nos encontramos leyendo
+	printf("\nLinea:%d\n",archivo->lineas_procesadas+1);
+
+	//Iniciliazamos el contador de caracteres en la linea
+	archivo -> cont_cart = 1;
+
+	//Leemos la primera letra donde comienza la siguiente linea
+	fseek(archivo->archivo_,archivo->pos_final,SEEK_SET);
 	letra = fgetc(archivo -> archivo_);
 
-	cadena = (char*) malloc(sizeof(char));
-	cadena[0] = letra;
-	//archivo -> linea_leida = (char ) letra;
-	//printf("%c",letra);
+	//Asignamos memoria a un puntero y le guardamos la letra leida
+	archivo -> linea_leida = (char*) malloc(sizeof(char));
+	archivo -> linea_leida[0] = letra;
+
+	//Aumentamos la cantidad de bytes leidos
 	archivo -> pos_final++;
 
 	while(letra != '\n'){
+		//Leemos el sig caracter
 		letra = fgetc(archivo -> archivo_);
+
+		//Aumentamos la cantidad de bytes leidos
 		archivo -> pos_final++;
-		cont++;
-		cadena = (char*) realloc(cadena,cont*sizeof(char));
-		cadena[cont-1] = letra;
+		archivo -> cont_cart++;
+
+		archivo -> linea_leida = (char*) realloc(archivo -> linea_leida,(archivo -> cont_cart)*sizeof(char));
+		archivo -> linea_leida[(archivo -> cont_cart)-1] = letra;
 	}
 
-	cadena[cont] = '\0';
-	archivo -> lineas_procesadas++;
-	printf("Leyo una linea\n");
-	printf("%s",cadena);
+	archivo -> linea_leida[archivo -> cont_cart] = '\0';
+	archivo -> pos_final = ftell(archivo->archivo_);
 
-	free(cadena);
+	printf("Leyo una linea\n");
+	printf("%s",archivo -> linea_leida);
+
+	//free(archivo -> linea_leida);	//Todavia no debemos librerar la memoria dado que la debemos procesar en otro estado
 }
-//char *LeerLetra_archivo(FILE *archivo){
-//
-//
-//}
+
+void Procesar_LineaArchivo(Tarchivo_dato *archivo,TLE_lista *lista){
+	//Ahora debemos crear un nodo para cada linea
+	if(Insertar_en_ListaVacia(lista, archivo -> linea_leida[0]));
+	else{
+		for(int i=1;i<archivo->cont_cart;i++){
+		//		Insertar_en_FinLista(lista, lista -> final, prueba[i]);
+		//	}
+		Insertar_en_FinLista(lista, lista -> final, archivo -> linea_leida[i]);
+		}
+	}
+
+	Imprimir_Lista(lista);
+
+	Destruir_Lista(lista);
+
+	//Indica que ya proceso la linea seleccionada
+	archivo -> lineas_procesadas++;
+
+	//Aca debemos liberar la memoria una vez que fue procesada la información
+	free(archivo -> linea_leida);
+}
