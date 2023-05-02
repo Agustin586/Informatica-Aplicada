@@ -1,84 +1,82 @@
 #include "Manejo_Archivos.h"
 
 int Valor_aleatorio(int min,int max){
-	//int valor = min+rand()/(RAND_MAX/(max-min+1)+1);
 	int valor = min + rand() % (max+1 - min);
 
 	return valor;
 }
 
-void Cadena_aleatoria(int longitud,char destino[]){
-	//Creamos la cadena aleatoria
-	for (int x = 0; x < longitud; x++){
-		int indiceAleatorio = Valor_aleatorio(RANGO_CARACTER_MIN,RANGO_CARACTER_MAX);	//Tomamos un caracter determinado
-		destino[x] = indiceAleatorio;
-	}
+void Simbolo_aleatorio(char *simbolo){
+	//Creamos el simbolo aleatorio
+	*simbolo = Valor_aleatorio(RANGO_CARACTER_MIN,RANGO_CARACTER_MAX-1);	//Tomamos un caracter determinado
 
 	return;
 }
 
-void Generar_archivo(void){
-	//srand(time(NULL));
-
+void Generar_archivo(Tarchivo_dato *archivo){
 	uint16_t cant_lineas;
-	FILE *archivo;
 
 	//Realizo un nuevo archivo datos.txt
-	archivo = fopen("datos.txt","w+");
+	archivo->archivo_ = fopen(archivo->nombre_archivo,"w");
 
-	//Realizamos un promedio de valores aleatorios, ya que el primer valor siempre es igual
+	//Generamos un bucle para los valores aleatorios
+	//esto lo hacemos dado que "se vuelve mas aleatorio de esta forma" sino siempre serían valores parecidos
 	for(int i=0;i<REPETICION;i++){
 		cant_lineas = Valor_aleatorio(RANGO_LINEA_MIN, RANGO_LINEA_MAX);
 	}
 
-	//printf("cantidad de lineas: %d\n",cant_lineas);
-
+	//Generamos los caracteres de cada linea
 	for(int g=0;g<cant_lineas;g++){
-		int longitud = Valor_aleatorio(RANGO_CANT_CARACTERES_MIN, RANGO_CANT_CARACTERES_MAX-1); //longitud de cadena aleatoria entre 0 y 20
-		char destino[longitud+1];
+		int longitud = Valor_aleatorio(RANGO_CANT_CARACTERES_MIN, RANGO_CANT_CARACTERES_MAX); //longitud de cadena aleatoria entre 0 y 20
 
-		Cadena_aleatoria(longitud, destino);
+		for(int i=0;i<longitud;i++){
+			char simbolo;
 
-		fprintf(archivo, "%s\n",destino);
+			Simbolo_aleatorio(&simbolo);
+			fputc(simbolo,archivo->archivo_);
+		}
+		fputc('\n',archivo->archivo_);
 	}
 
 	//Cerramos el archivo
-	fclose(archivo);
+	fclose(archivo->archivo_);
 
 	return;
 }
 
 //Esta función se realiza una vez para poder inicializar ciertas cosas
-void LeerLinea_archivo(Tarchivo_dato *archivo){
-	//FILE *archivo;
+void CantidadTotal_Lineas_archivo(Tarchivo_dato *archivo){
+	//Tipo de apertura como lectura
+	if((archivo->archivo_ = fopen(archivo->nombre_archivo,"r")) == NULL)	printf("No puedo abrirse el archivo");
 
-	archivo -> lineas_procesadas = 0;
-	archivo -> total_lineas = 0;
+	/*
+	 * Esta parte se encarga de leer la cantidad de lineas totales que posee
+	 * el archivo.
+	 * */
 
-	archivo -> archivo_ = fopen(archivo -> nombre_archivo,"r");
+	//Lee hasta el final del archivo
+	while(1){
+		char caracter=fgetc(archivo->archivo_);
 
-	//Lee la cantidad de lineas totales
-	//uint16_t total_lineas=0;
-	char caracter;
+		if(caracter == '\n')	archivo -> total_lineas+=1;	//Cuenta la cantidad total de lineas
 
-	caracter = fgetc(archivo -> archivo_);
-
-	while(caracter != EOF){
-		if(caracter == '\n')	archivo -> total_lineas++;
-		caracter = fgetc(archivo -> archivo_);
+		if(caracter == EOF)	break;
 	}
 
-	printf("\nTotal lineas: %d\n",archivo -> total_lineas);
+	//Suma la linea que no contiene el \n
+	archivo -> total_lineas ++;
 
+	//Imprime por pantalla la cantidad de lineas
+	printf("Total lineas: %d\n",archivo -> total_lineas);
+
+	//Vuelve al comienzo del archivo
 	rewind(archivo -> archivo_);
-	archivo -> pos_final = ftell(archivo->archivo_);	//Toma la posicion inicial del archivo
 
-	//Lee la primera linea entera y la guarda en un vector dinámico
+	//Toma la posición en la que se encuentra el puntero al archivo. Esto lo hacemos dado que luego
+	//queremos ubircarnos a partir de esa posición.
+	archivo -> pos_final = ftell(archivo->archivo_);
 
-
-	//Envia la posición del vector para luego procesarlo
-
-	//fclose(archivo->archivo_);
+	fclose(archivo->archivo_);
 
 	return;
 }
@@ -87,42 +85,36 @@ void LeerLinea_archivo(Tarchivo_dato *archivo){
 void Linea_archivo(Tarchivo_dato *archivo){
 	char letra;
 
-	//Mostramos en que linea nos encontramos leyendo
-	printf("\nLinea:%d\n",archivo->lineas_procesadas+1);
+	if((archivo->archivo_ = fopen(archivo->nombre_archivo,"r")) == NULL) printf("No puedo abrirse correctamente");
 
 	//Iniciliazamos el contador de caracteres en la linea
 	archivo -> cont_cart = 1;
 
 	//Leemos la primera letra donde comienza la siguiente linea
 	fseek(archivo->archivo_,archivo->pos_final,SEEK_SET);
-	letra = fgetc(archivo -> archivo_);
+	letra = fgetc(archivo->archivo_);
 
 	//Asignamos memoria a un puntero y le guardamos la letra leida
-	archivo -> linea_leida = (char*) malloc(sizeof(char));
+	archivo -> linea_leida = (char *) malloc(sizeof(char *));
 	archivo -> linea_leida[0] = letra;
-
-	//Aumentamos la cantidad de bytes leidos
-	archivo -> pos_final++;
 
 	while(letra != '\n'){
 		//Leemos el sig caracter
 		letra = fgetc(archivo -> archivo_);
 
-		//Aumentamos la cantidad de bytes leidos
-		archivo -> pos_final++;
-		archivo -> cont_cart++;
-
-		archivo -> linea_leida = (char*) realloc(archivo -> linea_leida,(archivo -> cont_cart)*sizeof(char));
-		archivo -> linea_leida[(archivo -> cont_cart)-1] = letra;
+		if(letra != '\n'){
+			archivo -> linea_leida = (char *) realloc(archivo -> linea_leida,(archivo -> cont_cart)+1*sizeof(char *));
+			archivo -> linea_leida[archivo -> cont_cart] = letra;
+			archivo -> cont_cart++;
+		}
 	}
 
 	archivo -> linea_leida[archivo -> cont_cart] = '\0';
 	archivo -> pos_final = ftell(archivo->archivo_);
 
-	printf("Leyo una linea\n");
-	printf("%s",archivo -> linea_leida);
+	fclose(archivo->archivo_);
 
-	//free(archivo -> linea_leida);	//Todavia no debemos librerar la memoria dado que la debemos procesar en otro estado
+	return;
 }
 
 void Procesar_LineaArchivo(Tarchivo_dato *archivo,TLE_lista *lista){
@@ -130,19 +122,9 @@ void Procesar_LineaArchivo(Tarchivo_dato *archivo,TLE_lista *lista){
 	if(Insertar_en_ListaVacia(lista, archivo -> linea_leida[0]));
 	else{
 		for(int i=1;i<archivo->cont_cart;i++){
-		//		Insertar_en_FinLista(lista, lista -> final, prueba[i]);
-		//	}
-		Insertar_en_FinLista(lista, lista -> final, archivo -> linea_leida[i]);
+			Insertar_en_FinLista(lista, lista -> final, archivo -> linea_leida[i]);
 		}
 	}
 
-	Imprimir_Lista(lista);
-
-	Destruir_Lista(lista);
-
-	//Indica que ya proceso la linea seleccionada
-	archivo -> lineas_procesadas++;
-
-	//Aca debemos liberar la memoria una vez que fue procesada la información
-	free(archivo -> linea_leida);
+	return;
 }
