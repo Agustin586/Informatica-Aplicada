@@ -303,34 +303,81 @@ TLE_lista *CrearLista(){
 }
 
 void Reordenar_Lista(TLE_lista *lista){
-	TNodo *actual,*siguiente;
-	char l;
-	int freq;
+	TNodo *actual,*intercambio,*t;
+	int dA=0,dI=1;
 
 	actual = lista->inicio;
 
-	//Ordenamiento de frecuencias
-	while(actual -> sgt != NULL){
-		siguiente = actual -> sgt;
+	dA = 0;	//Distancia del nodo actual al inicio
 
-		while(siguiente != NULL){
-			if((actual->frecuencia < siguiente->frecuencia)||
-			((actual->frecuencia == siguiente->frecuencia)&&(actual->letra> siguiente->letra))
-				){
-				l = siguiente -> letra;
-				freq = siguiente -> frecuencia;
+	while(actual->sgt != NULL){
+		intercambio = actual->sgt;
 
-				siguiente -> letra = actual -> letra;
-				siguiente -> frecuencia = actual -> frecuencia;
+		dI = dA+1;	//Distancia del nodo actual al de intercambio
+		if(dI>lista->tam)	dI = lista->tam;
 
-				actual -> letra = l;
-				actual -> frecuencia = freq;
+		t = lista->inicio;
+//		for(int i=0;i<dI;i++){
+//			t = t->sgt;
+//		}
+
+		while(t->sgt != NULL){
+			if((actual->frecuencia < intercambio->frecuencia)||((actual->frecuencia == intercambio->frecuencia)&&(actual->letra > intercambio->letra))){
+				TNodo *p1=lista->inicio,*p2=lista->inicio,*p3=lista->inicio,*p4=lista->inicio;
+
+				for(int i=0;i<dI+1;i++){
+					if(i<dI-1)	p1 = p1->sgt;
+					if(i<dI+1)	p2 = p2->sgt;
+					if(i<dA-1)	p3 = p3->sgt;
+					if(i<dA+1)	p4 = p4->sgt;
+				}
+
+				//Actual y Inicio+(dA+dI)+1
+				if(p2 == lista->final)	actual->sgt=NULL,lista->final = actual;
+				else	actual->sgt = p2;
+
+				//Inicio+(dA+dI)-1 y Actual
+				p1->sgt = actual;
+
+				//Inicio+(dA)-1 y intercambio
+				if(p3 == lista->inicio)	lista->inicio = intercambio;
+				else	p3->sgt = intercambio;
+
+				//Intercambio y Inicio+(dA)+1
+				intercambio->sgt = p4;
 			}
-			siguiente = siguiente -> sgt;
+			intercambio = intercambio->sgt;
+			t = t->sgt;
+			dI++;
+			if(dI>lista->tam)	dI = lista->tam;
 		}
-		actual = actual -> sgt;
-		siguiente = actual -> sgt;
+		actual = actual->sgt;
+		intercambio = actual->sgt;
+		dA++;
 	}
+
+//	//Ordenamiento de frecuencias
+//	while(actual -> sgt != NULL){
+//		siguiente = actual -> sgt;
+//
+//		while(siguiente != NULL){
+//			if((actual->frecuencia < siguiente->frecuencia)||
+//			((actual->frecuencia == siguiente->frecuencia)&&(actual->letra> siguiente->letra))
+//				){
+//				l = siguiente -> letra;
+//				freq = siguiente -> frecuencia;
+//
+//				siguiente -> letra = actual -> letra;
+//				siguiente -> frecuencia = actual -> frecuencia;
+//
+//				actual -> letra = l;
+//				actual -> frecuencia = freq;
+//			}
+//			siguiente = siguiente -> sgt;
+//		}
+//		actual = actual -> sgt;
+//		siguiente = actual -> sgt;
+//	}
 
 	return;
 }
