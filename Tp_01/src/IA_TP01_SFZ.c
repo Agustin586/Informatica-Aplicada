@@ -68,7 +68,7 @@ void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo,TLE_lista *l
 void Init_estados(int *est_archivos,int *est_linea);
 void Init_datoArchivo(Tarchivo_dato *archivo);
 
-volatile uint8_t fin_programa = 0;
+volatile uint8_t fin_programa = 0;	//No debe optimizarse
 
 int main(void){
 	srand(time(NULL));
