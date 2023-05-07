@@ -34,6 +34,20 @@ typedef enum{
 	Mostrar_Linea
 }Est_Linea_t;
 
+//Cada elemento de la lista
+//typedef struct Nodo{
+//	uint16_t frecuencia;
+//	char letra;
+//	struct Nodo *sgt;
+//}TNodo;
+
+//Lista de las estructuras enlazadas
+//typedef struct LE{
+//	TNodo *final;
+//	TNodo *inicio;
+//	int tam;
+//}TLE_lista;
+
 //Inicialización de la lista
 void Init_lista (TLE_lista * lista);
 
@@ -67,7 +81,8 @@ void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo,TLE_lista *l
 //Inicializacion de los estados
 void Init_estados(int *est_archivos,int *est_linea);
 
-volatile uint8_t fin_programa = 0;
+
+uint8_t fin_programa = 0;
 
 int main(void){
 	srand(time(NULL));
@@ -83,6 +98,20 @@ int main(void){
 
 	//Incializacion de la lista
 	Init_lista(lista);
+
+	//Inserta el primer nodo
+//	if(Insertar_en_ListaVacia(lista, prueba[0])==0); //Continua si fue bien creado
+//
+//	for(int i=1;i<CANT_CARACT;i++){
+//		Insertar_en_FinLista(lista, lista -> final, prueba[i]);
+//	}
+//
+//	Imprimir_Lista(lista);
+//
+//	Reordenar_Lista(lista);
+//
+//	printf("\n");
+//	Imprimir_Lista(lista);
 
 	//Inicializamos los estados con los procesos iniciales
 	Init_estados(&Estado_archivo, &Estado_linea);
@@ -283,6 +312,29 @@ void Reordenar_Lista(TLE_lista *lista){
 
 	actual = lista->inicio;
 
+	printf("\n");
+	Imprimir_Lista(lista);
+
+	//Ordenamiento de frecuencias
+	while(actual -> sgt != NULL){
+		siguiente = actual -> sgt;
+
+		while(siguiente != NULL){
+			if(actual -> frecuencia > siguiente -> frecuencia){
+				l = siguiente -> letra;
+				freq = siguiente -> frecuencia;
+
+				siguiente -> letra = actual -> letra;
+				siguiente -> frecuencia = actual -> frecuencia;
+
+				actual -> letra = l;
+				actual -> frecuencia = freq;
+			}
+			siguiente = siguiente -> sgt;
+		}
+		actual = actual -> sgt;
+		siguiente = actual -> sgt;
+		}
 
 	return;
 }
