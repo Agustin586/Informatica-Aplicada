@@ -82,7 +82,12 @@ void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo,TLE_lista *l
 void Init_estados(int *est_archivos,int *est_linea);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 volatile uint8_t fin_programa = 0;	//No debe optimizarse
+=======
+
+uint8_t fin_programa = 0;
+>>>>>>> parent of 9336bb9 (Programa finalizado)
 =======
 
 uint8_t fin_programa = 0;
@@ -319,11 +324,14 @@ void Reordenar_Lista(TLE_lista *lista){
 	actual = lista->inicio;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	dA = 0;	//Distancia del nodo actual al inicio
 
 	while(actual->sgt != NULL){
 		intercambio = actual->sgt;
 =======
+=======
+>>>>>>> parent of 9336bb9 (Programa finalizado)
 	//Dado que solmente recorremos en un sentido hay que
 	//movernos uno a la vez e ir comparando
 
@@ -408,6 +416,7 @@ void Reordenar_Lista(TLE_lista *lista){
 		actual = actual -> sgt;
 		siguiente = actual -> sgt;
 		}
+<<<<<<< HEAD
 >>>>>>> parent of 9336bb9 (Programa finalizado)
 
 //	//Ordenamiento de frecuencias
@@ -432,6 +441,8 @@ void Reordenar_Lista(TLE_lista *lista){
 //		actual = actual -> sgt;
 //		siguiente = actual -> sgt;
 //	}
+=======
+>>>>>>> parent of 9336bb9 (Programa finalizado)
 
 	return;
 }
