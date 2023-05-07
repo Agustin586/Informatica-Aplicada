@@ -83,6 +83,7 @@ void Init_estados(int *est_archivos,int *est_linea);
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 volatile uint8_t fin_programa = 0;	//No debe optimizarse
 =======
 
@@ -92,6 +93,9 @@ uint8_t fin_programa = 0;
 
 uint8_t fin_programa = 0;
 >>>>>>> parent of 9336bb9 (Programa finalizado)
+=======
+volatile uint8_t fin_programa = 0;
+>>>>>>> parent of b2200d5 (.)
 
 int main(void){
 	srand(time(NULL));
