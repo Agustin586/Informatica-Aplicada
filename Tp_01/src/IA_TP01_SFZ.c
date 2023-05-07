@@ -34,20 +34,6 @@ typedef enum{
 	Mostrar_Linea
 }Est_Linea_t;
 
-//Cada elemento de la lista
-//typedef struct Nodo{
-//	uint16_t frecuencia;
-//	char letra;
-//	struct Nodo *sgt;
-//}TNodo;
-
-//Lista de las estructuras enlazadas
-//typedef struct LE{
-//	TNodo *final;
-//	TNodo *inicio;
-//	int tam;
-//}TLE_lista;
-
 //Inicialización de la lista
 void Init_lista (TLE_lista * lista);
 
@@ -90,8 +76,6 @@ int main(void){
 
 	int Estado_archivo,Estado_linea;
 
-	//char prueba[]={'a','d','b','a','b','l'};
-
 	TLE_lista *lista=CrearLista();		//Creamos la lista de los nodos
 	Tarchivo_dato *psArchivo;			//pointer struct Archivo
 
@@ -99,20 +83,6 @@ int main(void){
 
 	//Incializacion de la lista
 	Init_lista(lista);
-
-	//Inserta el primer nodo
-//	if(Insertar_en_ListaVacia(lista, prueba[0])==0); //Continua si fue bien creado
-//
-//	for(int i=1;i<CANT_CARACT;i++){
-//		Insertar_en_FinLista(lista, lista -> final, prueba[i]);
-//	}
-//
-//	Imprimir_Lista(lista);
-//
-//	Reordenar_Lista(lista);
-//
-//	printf("\n");
-//	Imprimir_Lista(lista);
 
 	//Inicializamos los estados con los procesos iniciales
 	Init_estados(&Estado_archivo, &Estado_linea);
@@ -313,126 +283,6 @@ void Reordenar_Lista(TLE_lista *lista){
 
 	actual = lista->inicio;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	dA = 0;	//Distancia del nodo actual al inicio
-
-	while(actual->sgt != NULL){
-		intercambio = actual->sgt;
-=======
-=======
->>>>>>> parent of 9336bb9 (Programa finalizado)
-	//Dado que solmente recorremos en un sentido hay que
-	//movernos uno a la vez e ir comparando
-
-	//Ordenamiento lexico
-//	while(actual -> sgt != NULL){
-//		siguiente = actual -> sgt;
-//
-//		while(siguiente != NULL){
-//			if(actual -> letra > siguiente -> letra){
-//				l = siguiente -> letra;
-//				freq = siguiente -> frecuencia;
-//
-//				siguiente -> letra = actual -> letra;
-//				siguiente -> frecuencia = actual -> frecuencia;
-//
-//				actual -> letra = l;
-//				actual -> frecuencia = freq;
-//			}
-//			siguiente = siguiente -> sgt;
-//		}
-//		actual = actual -> sgt;
-//		siguiente = actual -> sgt;
-//	}
-
-	printf("\n");
-	Imprimir_Lista(lista);
-
-	//Ordenamiento de frecuencias
-	while(actual -> sgt != NULL){
-		siguiente = actual -> sgt;
-
-		while(siguiente != NULL){
-			if(actual -> frecuencia > siguiente -> frecuencia){
-				l = siguiente -> letra;
-				freq = siguiente -> frecuencia;
->>>>>>> parent of 9336bb9 (Programa finalizado)
-
-		dI = dA+1;	//Distancia del nodo actual al de intercambio
-		if(dI>lista->tam)	dI = lista->tam;
-
-		t = lista->inicio;
-//		for(int i=0;i<dI;i++){
-//			t = t->sgt;
-//		}
-
-		while(t->sgt != NULL){
-			if((actual->frecuencia < intercambio->frecuencia)||((actual->frecuencia == intercambio->frecuencia)&&(actual->letra > intercambio->letra))){
-				TNodo *p1=lista->inicio,*p2=lista->inicio,*p3=lista->inicio,*p4=lista->inicio;
-
-				for(int i=0;i<dI+1;i++){
-					if(i<dI-1)	p1 = p1->sgt;
-					if(i<dI+1)	p2 = p2->sgt;
-					if(i<dA-1)	p3 = p3->sgt;
-					if(i<dA+1)	p4 = p4->sgt;
-				}
-
-				//Actual y Inicio+(dA+dI)+1
-				if(p2 == lista->final)	actual->sgt=NULL,lista->final = actual;
-				else	actual->sgt = p2;
-
-				//Inicio+(dA+dI)-1 y Actual
-				p1->sgt = actual;
-
-				//Inicio+(dA)-1 y intercambio
-				if(p3 == lista->inicio)	lista->inicio = intercambio;
-				else	p3->sgt = intercambio;
-
-				//Intercambio y Inicio+(dA)+1
-				intercambio->sgt = p4;
-			}
-			intercambio = intercambio->sgt;
-			t = t->sgt;
-			dI++;
-			if(dI>lista->tam)	dI = lista->tam;
-		}
-<<<<<<< HEAD
-		actual = actual->sgt;
-		intercambio = actual->sgt;
-		dA++;
-	}
-=======
-		actual = actual -> sgt;
-		siguiente = actual -> sgt;
-		}
-<<<<<<< HEAD
->>>>>>> parent of 9336bb9 (Programa finalizado)
-
-//	//Ordenamiento de frecuencias
-//	while(actual -> sgt != NULL){
-//		siguiente = actual -> sgt;
-//
-//		while(siguiente != NULL){
-//			if((actual->frecuencia < siguiente->frecuencia)||
-//			((actual->frecuencia == siguiente->frecuencia)&&(actual->letra> siguiente->letra))
-//				){
-//				l = siguiente -> letra;
-//				freq = siguiente -> frecuencia;
-//
-//				siguiente -> letra = actual -> letra;
-//				siguiente -> frecuencia = actual -> frecuencia;
-//
-//				actual -> letra = l;
-//				actual -> frecuencia = freq;
-//			}
-//			siguiente = siguiente -> sgt;
-//		}
-//		actual = actual -> sgt;
-//		siguiente = actual -> sgt;
-//	}
-=======
->>>>>>> parent of 9336bb9 (Programa finalizado)
 
 	return;
 }
