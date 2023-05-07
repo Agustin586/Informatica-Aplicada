@@ -307,20 +307,20 @@ TLE_lista *CrearLista(){
 }
 
 void Reordenar_Lista(TLE_lista *lista){
-	TNodo *actual,*intercambio,*t;
-	int dA=0,dI=1;
+	TNodo *actual,*siguiente;
+	char l;
+	int freq;
 
 	actual = lista->inicio;
-
-	printf("\n");
-	Imprimir_Lista(lista);
 
 	//Ordenamiento de frecuencias
 	while(actual -> sgt != NULL){
 		siguiente = actual -> sgt;
 
 		while(siguiente != NULL){
-			if(actual -> frecuencia > siguiente -> frecuencia){
+			if((actual->frecuencia < siguiente->frecuencia)||
+			((actual->frecuencia == siguiente->frecuencia)&&(actual->letra> siguiente->letra))
+				){
 				l = siguiente -> letra;
 				freq = siguiente -> frecuencia;
 
@@ -334,7 +334,7 @@ void Reordenar_Lista(TLE_lista *lista){
 		}
 		actual = actual -> sgt;
 		siguiente = actual -> sgt;
-		}
+	}
 
 	return;
 }
