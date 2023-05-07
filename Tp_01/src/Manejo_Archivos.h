@@ -5,7 +5,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
 
 #define CANT_MAX_CARACTERES	96
 #define RANGO_CARACTER_MIN	32
@@ -13,7 +12,7 @@
 #define RANGO_LINEA_MIN		1
 #define RANGO_LINEA_MAX		10
 #define RANGO_CANT_CARACTERES_MIN	0
-#define RANGO_CANT_CARACTERES_MAX	100
+#define RANGO_CANT_CARACTERES_MAX	20
 #define REPETICION	100
 
 typedef struct{
@@ -41,14 +40,14 @@ typedef struct LE{
 //Genera valores aleatorios
 int Valor_aleatorio(int min,int max);
 
-//Generamos el simbolo aleatorio
-void Simbolo_aleatorio(char *simbolo);
+//Genera la cadena aleatoria
+void Cadena_aleatoria(int longitud,char destino[]);
 
 //Carga todo en el archivo
-void Generar_archivo(Tarchivo_dato *archivo);
+void Generar_archivo(void);
 
 //Leemos el archivo linea por linea
-void CantidadTotal_Lineas_archivo(Tarchivo_dato *archivo);
+void LeerLinea_archivo(Tarchivo_dato *archivo);
 void Linea_archivo(Tarchivo_dato *archivo);
 
 //Procesar la linea leida

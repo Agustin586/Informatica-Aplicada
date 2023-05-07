@@ -3,7 +3,7 @@
  Name        : Tp_Info_AFZ.c
  Author      :
  Version     :
- Copyright   :
+ Copyright   : Your copyright notice
  Description : Tp informatica
  ============================================================================
  */
@@ -33,6 +33,20 @@ typedef enum{
 	Ordenar_Linea,
 	Mostrar_Linea
 }Est_Linea_t;
+
+//Cada elemento de la lista
+//typedef struct Nodo{
+//	uint16_t frecuencia;
+//	char letra;
+//	struct Nodo *sgt;
+//}TNodo;
+
+//Lista de las estructuras enlazadas
+//typedef struct LE{
+//	TNodo *final;
+//	TNodo *inicio;
+//	int tam;
+//}TLE_lista;
 
 //Inicialización de la lista
 void Init_lista (TLE_lista * lista);
@@ -66,9 +80,13 @@ void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo,TLE_lista *l
 
 //Inicializacion de los estados
 void Init_estados(int *est_archivos,int *est_linea);
-void Init_datoArchivo(Tarchivo_dato *archivo);
 
+<<<<<<< HEAD
 volatile uint8_t fin_programa = 0;	//No debe optimizarse
+=======
+
+uint8_t fin_programa = 0;
+>>>>>>> parent of 9336bb9 (Programa finalizado)
 
 int main(void){
 	srand(time(NULL));
@@ -76,36 +94,41 @@ int main(void){
 	setbuf(stdout,0);
 
 	int Estado_archivo,Estado_linea;
-	TLE_lista *lista=CrearLista();				//Creamos la lista de los nodos
-	Tarchivo_dato datos_archivo;
-	Tarchivo_dato *psArchivo=&datos_archivo;	//pointer struct Archivo
 
-	//Inicializamos los datos del archivo
-	Init_datoArchivo(psArchivo);
+	//char prueba[]={'a','d','b','a','b','l'};
+
+	TLE_lista *lista=CrearLista();		//Creamos la lista de los nodos
+	Tarchivo_dato *psArchivo;			//pointer struct Archivo
+
+	strcpy(psArchivo -> nombre_archivo,"datos.txt");
 
 	//Incializacion de la lista
 	Init_lista(lista);
+
+	//Inserta el primer nodo
+//	if(Insertar_en_ListaVacia(lista, prueba[0])==0); //Continua si fue bien creado
+//
+//	for(int i=1;i<CANT_CARACT;i++){
+//		Insertar_en_FinLista(lista, lista -> final, prueba[i]);
+//	}
+//
+//	Imprimir_Lista(lista);
+//
+//	Reordenar_Lista(lista);
+//
+//	printf("\n");
+//	Imprimir_Lista(lista);
 
 	//Inicializamos los estados con los procesos iniciales
 	Init_estados(&Estado_archivo, &Estado_linea);
 
 	//Bucle que se repite hasta leer todas las lineas
 	while(1){
-		if(fin_programa==0)		Estados(&Estado_archivo,&Estado_linea,psArchivo,lista);
-		else if(fin_programa)	break;
+		if(!fin_programa)	Estados(&Estado_archivo,&Estado_linea,psArchivo,lista);
+		else 				break;
 	}
 
 	return EXIT_SUCCESS;
-}
-
-void Init_datoArchivo(Tarchivo_dato *archivo){
-	archivo->cont_cart = 0;
-	archivo->lineas_procesadas = 0;
-	archivo->nombre_archivo = "datos_aleatorios.txt";
-	archivo->pos_final = 0;
-	archivo->total_lineas = 0;
-
-	return;
 }
 
 void Init_estados(int *est_archivos,int *est_linea){
@@ -118,33 +141,30 @@ void Init_estados(int *est_archivos,int *est_linea){
 
 void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo,TLE_lista *lista){
 	switch(*est_archivo){
+		//No se hace nada queda en vacío
 		case Reposo_Archivo:{
-			//Solamente espera
 			break;
 		}
 		case Generar_Archivo:{
-			//Generamos el archivo --> Solamente debe hacerse una vez por programa
-			Generar_archivo(archivo);
+			printf("Generamos el archivo aleatorio");
+			Generar_archivo();
 
-			//Cambiamos de estado --> Leeremos la cantidad total de lineas
 			*est_archivo = Total_Linea_Archivo;
 			break;
 		}
+		//Esta no realiza nada --> la dejo para ver si puedo meter algo
+		//sino la saco
 		case Total_Linea_Archivo:{
-			//Leemos la cantidad de lineas del archivo e inicilizamos ciertos datos.
-			CantidadTotal_Lineas_archivo(archivo);
+			LeerLinea_archivo(archivo);
 
-			//Cambiamos de estado --> Procesaremos linea a linea hasta el final del archivo
 			*est_archivo = Procesar_Linea_Archivo;
 			break;
 		}
-		//Este estado deberá repetirse hasta que finalize la lectura completa del archivo
 		case Procesar_Linea_Archivo:{
-			//Leemos la linea solicitada y procesamos los datos correspondientes
 			Linea_archivo(archivo);
 
 			*est_archivo = Reposo_Archivo;	//Espera que se procese la linea
-			*est_linea = Procesar_Linea;	//Procesa la linea en otro estado dedicado a eso
+			*est_linea = Procesar_Linea;	//Procesa la linea en otro estado dedica a eso
 			break;
 		}
 		case Fin_Archivo:{
@@ -154,41 +174,31 @@ void Estados(int *est_archivo,int *est_linea,Tarchivo_dato *archivo,TLE_lista *l
 		}
 		default: break;
 	}
-
 	switch(*est_linea){
 		case Reposo_Linea:{
-			//Espera a que se tenga una linea para ser procesada
 			break;
 		}
 		case Procesar_Linea:{
-			//Leemos la linea almacenada en el puntero y luego procesamos la información
 			Procesar_LineaArchivo(archivo,lista);
 
-			//Cambiamos de estado --> Ordenamos según corresponda
 			*est_linea = Ordenar_Linea;
 			break;
 		}
 		case Ordenar_Linea:{
-			Reordenar_Lista(lista);
-			//Cambiamos de estado --> Mostramos por pantalla el resultado
+
 			*est_linea = Mostrar_Linea;
 			break;
 		}
 		case Mostrar_Linea:{
-			Imprimir_Lista(lista);
 
-			//Aca debemos liberar la memoria una vez que fue procesada la información
-			free(archivo -> linea_leida);
-
-			Destruir_Lista(lista);
-
-			//Indica que ya proceso la linea seleccionada
-			archivo -> lineas_procesadas++;
-
-			if((archivo -> total_lineas)-1 != (archivo -> lineas_procesadas)) *est_archivo = Procesar_Linea_Archivo;
-			else	*est_archivo = Fin_Archivo;
-
-			*est_linea = Reposo_Linea;				//Vuelve a esperar a que se lea la siguiente linea
+			if(archivo -> total_lineas != archivo -> lineas_procesadas){
+				*est_linea = Reposo_Linea;				//Vuelve a esperar a que se lea la siguiente linea
+				*est_archivo = Procesar_Linea_Archivo;	//Vuelve a procesarla
+			}
+			else{
+				*est_archivo = Fin_Archivo;
+			}
+			//Debemos liberar la memoria --> Free
 			break;
 		}
 		default: break;
@@ -270,7 +280,8 @@ void Borrar_Nodo_Alinicio(TLE_lista *lista){
 
 	if(lista -> tam == 1)	lista -> final = NULL;
 
-	free(sup_nodo);
+	free((sup_nodo -> frecuencia));
+	free((sup_nodo -> letra));
 	lista -> tam--;
 
 	return;
@@ -287,10 +298,9 @@ void Imprimir_Lista(TLE_lista *lista){
 
 	p=lista->inicio;
 
-	printf("\n");
 	//Recorremos de izquierda a derecha el puntero al siguiente nodo
 	while(p!=NULL){
-		printf("%c\t",p->letra);
+		printf("%c \t",p->letra);
 		printf("%d\n",p->frecuencia);
 		p = p -> sgt;
 	}
@@ -308,10 +318,48 @@ void Reordenar_Lista(TLE_lista *lista){
 
 	actual = lista->inicio;
 
+<<<<<<< HEAD
 	dA = 0;	//Distancia del nodo actual al inicio
 
 	while(actual->sgt != NULL){
 		intercambio = actual->sgt;
+=======
+	//Dado que solmente recorremos en un sentido hay que
+	//movernos uno a la vez e ir comparando
+
+	//Ordenamiento lexico
+//	while(actual -> sgt != NULL){
+//		siguiente = actual -> sgt;
+//
+//		while(siguiente != NULL){
+//			if(actual -> letra > siguiente -> letra){
+//				l = siguiente -> letra;
+//				freq = siguiente -> frecuencia;
+//
+//				siguiente -> letra = actual -> letra;
+//				siguiente -> frecuencia = actual -> frecuencia;
+//
+//				actual -> letra = l;
+//				actual -> frecuencia = freq;
+//			}
+//			siguiente = siguiente -> sgt;
+//		}
+//		actual = actual -> sgt;
+//		siguiente = actual -> sgt;
+//	}
+
+	printf("\n");
+	Imprimir_Lista(lista);
+
+	//Ordenamiento de frecuencias
+	while(actual -> sgt != NULL){
+		siguiente = actual -> sgt;
+
+		while(siguiente != NULL){
+			if(actual -> frecuencia > siguiente -> frecuencia){
+				l = siguiente -> letra;
+				freq = siguiente -> frecuencia;
+>>>>>>> parent of 9336bb9 (Programa finalizado)
 
 		dI = dA+1;	//Distancia del nodo actual al de intercambio
 		if(dI>lista->tam)	dI = lista->tam;
@@ -351,10 +399,16 @@ void Reordenar_Lista(TLE_lista *lista){
 			dI++;
 			if(dI>lista->tam)	dI = lista->tam;
 		}
+<<<<<<< HEAD
 		actual = actual->sgt;
 		intercambio = actual->sgt;
 		dA++;
 	}
+=======
+		actual = actual -> sgt;
+		siguiente = actual -> sgt;
+		}
+>>>>>>> parent of 9336bb9 (Programa finalizado)
 
 //	//Ordenamiento de frecuencias
 //	while(actual -> sgt != NULL){
