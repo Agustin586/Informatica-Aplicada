@@ -86,7 +86,10 @@ void Init_estados(int *est_archivos,int *est_linea);
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 volatile uint8_t fin_programa = 0;	//No debe optimizarse
+=======
+>>>>>>> parent of b2200d5 (.)
 
 
 int main(void){
