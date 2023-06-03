@@ -20,7 +20,7 @@ private:
 	bool estacionamiento;
 	uint8_t id;
 public:
-	static uint8_t cant_ocupada;
+	static uint8_t Cant_activas;
 	static uint8_t costo_fijo;
 	static uint8_t costo_extra;
 	//Construtuctor
