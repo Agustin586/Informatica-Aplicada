@@ -15,9 +15,6 @@
 #include <time.h>
 #include "Manejo_Archivos.h"
 
-#define CANT_LINEAS	2	//PARA PROBAR
-#define CANT_CARACT 6
-
 //Creamos los estados
 typedef enum{
 	Reposo_Archivo,
