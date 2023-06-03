@@ -3,6 +3,7 @@
 
 // Inclusiones
 #include <iostream>
+#include <conio.h>
 #include "Sombrillas.h"
 #include "SombrillasEspeciales.h"
 

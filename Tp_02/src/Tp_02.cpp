@@ -11,22 +11,18 @@ using namespace std;
 int main() {
 	setbuf(stdout,0);
 
-	//Creamos un objeto de tipo sombrillas
-	Sombrillas s1(2,false,1);
-	Sombrillas s2(2,true,2);
-	SombrillasEspeciales s3(2,false,2,2);
-	SombrillasEspeciales s4(2,true,2,2);
-
 	//Menu
-	Progm_est *pTProgm;
-	Menu_est *pTMenu;
+	Progm_est TProgm, *pTProgm = &TProgm;
+	Menu_est TMenu, *pTMenu = &TMenu;
 
-	Init();
+	vInit();
 	vInit_Progm(pTProgm);
 	vInit_Menu(pTMenu);
 
 	while(1){
 		vProgm(pTProgm,pTMenu);
+
+		if(*pTMenu == SALIR)	break;
 	}
 
 	return 0;
@@ -49,19 +45,33 @@ void vInit_Menu (Menu_est *TMenu){
 }
 
 void vProgm(Progm_est *TProgm,Menu_est *TMenu){
-	switch(TProgm){
+	switch(*TProgm){
 	case ESPERA_SELECCION_MENU:{
 		uint8_t opcion;
 
-		cout<<"Opciones:"<<endl<<"1:Ingreso de sombrilla normal"<<"2:Ingreso de sombrilla especial"<<"3:Mostrar lista total de sombrillas"<<"4:Borrar sombrilla"<<"5:Cerrar"<<endl;
+		cout<<"Opciones:"<<endl<<"1:Ingreso de sombrilla normal\n"<<"2:Ingreso de sombrilla especial\n"<<"3:Mostrar lista total de sombrillas\n"<<"4:Borrar sombrilla\n"<<"5:Cerrar"<<endl<<endl;
+		cout<<"Opcion: ";
 		cin>>opcion;
 
-		while(opcion != NUEVA_SOMBRILLA_NORMAL || opcion != NUEVA_SOMBRILLA_ESPECIAL || opcion != MOSTRAR_LISTA_TOTAL_SOMBRILLAS || opcion != BORRAR_SOMBRILLA || opcion != SALIR){
-			cout<<"Opciones:"<<endl<<"1:Ingreso de sombrilla"<<"2:Mostrar lista total de sombrillas"<<"3:Borrar sombrilla"<<"4:Cerrar"<<endl;
+		*TMenu = (Menu_est)opcion;
+		cout<<*TMenu<<endl;
+
+//		if(opcion != SALIR)	cout<<"distinto no deberia pasar"<<endl;
+
+		while(*TMenu != NUEVA_SOMBRILLA_NORMAL && *TMenu != NUEVA_SOMBRILLA_ESPECIAL && *TMenu != MOSTRAR_LISTA_TOTAL_SOMBRILLAS && *TMenu != BORRAR_SOMBRILLA && *TMenu != SALIR){
+			cout<<endl<<"Ingreso un dato equivocado, ingrese de nuevo"<<endl<<endl;
+			cout<<"Opciones:"<<endl<<"1:Ingreso de sombrilla normal\n"<<"2:Ingreso de sombrilla especial\n"<<"3:Mostrar lista total de sombrillas\n"<<"4:Borrar sombrilla\n"<<"5:Cerrar"<<endl<<endl;
+			cout<<"Opcion: ";
 			cin>>opcion;
+
+			*TMenu = (Menu_est)opcion;
+			cout<<*TMenu<<endl;
+
 		}
 
-		*TMenu = opcion;
+		cout<<*TMenu<<endl;
+		getch();
+
 		*TProgm = MENU;
 	break;
 	}
@@ -69,6 +79,8 @@ void vProgm(Progm_est *TProgm,Menu_est *TMenu){
 		vMenu(TMenu);
 
 		*TProgm = ESPERA_SELECCION_MENU;
+		if(*TMenu != SALIR)	*TMenu = VACIO;	//Vuelve a inicalizarlo en caso de no terminar el programa
+
 	break;
 	}
 	}
@@ -77,7 +89,7 @@ void vProgm(Progm_est *TProgm,Menu_est *TMenu){
 void vMenu (Menu_est *TMenu){
 	switch(*TMenu){
 	case VACIO:{
-
+		//Se queda esperando
 	break;
 	}
 	case NUEVA_SOMBRILLA_NORMAL:{
@@ -91,8 +103,6 @@ void vMenu (Menu_est *TMenu){
 		//Debe verificar si antes existe lugar para poder crear una sombrilla de cualquier tipo
 		// ---
 		//
-
-
 	break;
 	}
 	case MOSTRAR_LISTA_TOTAL_SOMBRILLAS:{
@@ -104,7 +114,8 @@ void vMenu (Menu_est *TMenu){
 	break;
 	}
 	case SALIR:{
-
+		//Deberia llamar a los destructores de todo por las dudas
+		cout<<"Programa finalizado"<<endl;
 	break;
 	}
 	default:{
@@ -130,7 +141,11 @@ void vCrearSombrilla_Normal(){
 	cout<<"1:Si \t 0:No"<<endl;
 	cin>>estacionamiento;
 
+	//Creamos un objeto de tipo sombrilla normal
 	Sombrillas somb_norm(dias,estacionamiento,Cant_Actual_Alquileres++);
+
+	//Insertamos dicho objeto en nuestro vector polimórfico
+
 
 	return;
 }

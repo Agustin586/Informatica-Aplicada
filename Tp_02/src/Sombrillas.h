@@ -27,6 +27,7 @@ public:
 	Sombrillas();
 	Sombrillas(uint8_t dias_,bool est,uint8_t id_);
 	virtual ~Sombrillas();
+	void vMostrardatos_Sombrilla(void);
 
 	// Gets y sets
 	uint8_t getDias() const {
