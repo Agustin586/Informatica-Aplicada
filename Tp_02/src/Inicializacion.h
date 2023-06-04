@@ -6,6 +6,7 @@
 #include <conio.h>
 #include "Sombrillas.h"
 #include "SombrillasEspeciales.h"
+#include "ColeccionAlquiler.h"
 
 uint8_t Sombrillas::costo_fijo = 200;
 uint8_t Sombrillas::costo_extra = 100;
@@ -36,8 +37,8 @@ typedef enum{
 
 void vInit_Progm (Progm_est *TProgm);
 void vInit_Menu (Menu_est *TMenu);
-void vProgm(Progm_est *TProgm,Menu_est *TMenu);
-void vMenu (Menu_est *TMenu);
+void vProgm(Progm_est *TProgm,Menu_est *TMenu,ColeccionAlquiler &lista_);
+void vMenu (Menu_est *TMenu,ColeccionAlquiler &lista_);
 
 /* Variables y funciones realcionadas con la clase Sombrilla */
 void vCrearSombrilla_Normal();

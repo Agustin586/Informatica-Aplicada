@@ -15,12 +15,18 @@ int main() {
 	Progm_est TProgm, *pTProgm = &TProgm;
 	Menu_est TMenu, *pTMenu = &TMenu;
 
+	int total_somb;
+
+	cout<<"Ingrese la cantidad total de sombrillas"<<endl;
+	cin>>total_somb;
+	ColeccionAlquiler lista_total(total_somb);
+
 	vInit();
 	vInit_Progm(pTProgm);
 	vInit_Menu(pTMenu);
 
 	while(1){
-		vProgm(pTProgm,pTMenu);
+		vProgm(pTProgm,pTMenu,lista_total);
 
 		if(*pTMenu == SALIR)	break;
 	}
@@ -44,7 +50,7 @@ void vInit_Menu (Menu_est *TMenu){
 	return;
 }
 
-void vProgm(Progm_est *TProgm,Menu_est *TMenu){
+void vProgm(Progm_est *TProgm,Menu_est *TMenu,ColeccionAlquiler &lista_){
 	switch(*TProgm){
 	case ESPERA_SELECCION_MENU:{
 		int opcion;
@@ -67,11 +73,10 @@ void vProgm(Progm_est *TProgm,Menu_est *TMenu){
 		}
 
 		*TProgm = MENU;
-		if(*TMenu==SALIR)	cout<<"Modo salir"<<endl;
 	break;
 	}
 	case MENU:{
-		vMenu(TMenu);
+		vMenu(TMenu,lista_);
 
 		*TProgm = ESPERA_SELECCION_MENU;
 		if(*TMenu != SALIR)	*TMenu = VACIO;	//Vuelve a inicalizarlo en caso de no terminar el programa
@@ -81,7 +86,7 @@ void vProgm(Progm_est *TProgm,Menu_est *TMenu){
 	}
 }
 
-void vMenu (Menu_est *TMenu){
+void vMenu (Menu_est *TMenu,ColeccionAlquiler &lista_){
 	switch(*TMenu){
 	case VACIO:{
 		//Se queda esperando
@@ -126,7 +131,7 @@ void vCrearSombrilla_Normal(){
 	cout<<"Dias de alquiler:"<<endl;
 	cin>>dias;
 
-	while(dias > CANT_MAX_DIAS_ALQUILER){
+	while(dias < CANT_MAX_DIAS_ALQUILER){
 		cout<<"Ingrese una cantidad de dias menor a: "<<CANT_MAX_DIAS_ALQUILER<<endl;
 		cout<<"Dias de alquiler:"<<endl;
 		cin>>dias;
