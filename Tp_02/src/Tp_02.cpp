@@ -47,16 +47,13 @@ void vInit_Menu (Menu_est *TMenu){
 void vProgm(Progm_est *TProgm,Menu_est *TMenu){
 	switch(*TProgm){
 	case ESPERA_SELECCION_MENU:{
-		uint8_t opcion;
+		int opcion;
 
 		cout<<"Opciones:"<<endl<<"1:Ingreso de sombrilla normal\n"<<"2:Ingreso de sombrilla especial\n"<<"3:Mostrar lista total de sombrillas\n"<<"4:Borrar sombrilla\n"<<"5:Cerrar"<<endl<<endl;
 		cout<<"Opcion: ";
 		cin>>opcion;
 
 		*TMenu = (Menu_est)opcion;
-		cout<<*TMenu<<endl;
-
-//		if(opcion != SALIR)	cout<<"distinto no deberia pasar"<<endl;
 
 		while(*TMenu != NUEVA_SOMBRILLA_NORMAL && *TMenu != NUEVA_SOMBRILLA_ESPECIAL && *TMenu != MOSTRAR_LISTA_TOTAL_SOMBRILLAS && *TMenu != BORRAR_SOMBRILLA && *TMenu != SALIR){
 			cout<<endl<<"Ingreso un dato equivocado, ingrese de nuevo"<<endl<<endl;
@@ -69,10 +66,8 @@ void vProgm(Progm_est *TProgm,Menu_est *TMenu){
 
 		}
 
-		cout<<*TMenu<<endl;
-		getch();
-
 		*TProgm = MENU;
+		if(*TMenu==SALIR)	cout<<"Modo salir"<<endl;
 	break;
 	}
 	case MENU:{
