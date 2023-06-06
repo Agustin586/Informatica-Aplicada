@@ -9,7 +9,7 @@
 #define SOMBRILLAS_H_
 
 #include <iostream>
-#include <stdint.h>
+#include <cstdint>
 #include <stdbool.h>
 
 using namespace std;
@@ -25,7 +25,7 @@ public:
 	static uint8_t costo_extra;
 	//Construtuctor
 	Sombrillas();
-	Sombrillas(uint8_t dias_,bool est,uint8_t id_);
+	Sombrillas(unsigned short dias_, bool est, unsigned short id_);
 	virtual ~Sombrillas();
 	void vMostrardatos_Sombrilla(void);
 

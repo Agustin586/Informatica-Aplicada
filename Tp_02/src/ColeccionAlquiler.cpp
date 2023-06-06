@@ -20,8 +20,7 @@ ColeccionAlquiler::~ColeccionAlquiler() {
 //	}
 }
 
-void ColeccionAlquiler::vInsertar(const Sombrillas &MSombrilla, bool especial) {
-
+void ColeccionAlquiler::vInsertar(const Sombrillas &MSombrilla) {
 	Lista_Sombrillas.push_back(MSombrilla);	//Insertamos la sombrilla en el vector
 }
 
@@ -36,9 +35,11 @@ void ColeccionAlquiler::vEliminar(uint8_t id_, bool especial) {
 //}
 
 void ColeccionAlquiler::vMostrar_Lista_Alquiler(void) {
+	cout<<endl<<"|Lista Sombrillas|"<<endl;
 	for(uint8_t i=0;i<Lista_Sombrillas.size();i++){
 		Lista_Sombrillas[i].vMostrardatos_Sombrilla();
 	}
+	cout<<endl;
 }
 /*
  ColeccionAlquiler::ColeccionAlquiler(uint8_t total) {

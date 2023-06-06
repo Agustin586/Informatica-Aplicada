@@ -12,7 +12,7 @@ Sombrillas::Sombrillas() {
 
 }
 
-Sombrillas::Sombrillas(uint8_t dias_, bool est, uint8_t id_): dias(dias_),estacionamiento(est), id(id_){}
+Sombrillas::Sombrillas(unsigned short dias_, bool est, unsigned short id_): dias(dias_),estacionamiento(est), id(id_){}
 
 Sombrillas::~Sombrillas() {
 	// TODO Auto-generated destructor stub

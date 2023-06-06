@@ -3,6 +3,7 @@
 
 // Inclusiones
 #include <iostream>
+#include <cstdint>
 #include <conio.h>
 #include "Sombrillas.h"
 #include "SombrillasEspeciales.h"
@@ -13,7 +14,9 @@ uint8_t Sombrillas::costo_extra = 100;
 
 /* Macros de utilidad */
 #define CANT_MAX_DIAS_ALQUILER	30
-#define CANT_MAX_ALQUILERES	50
+#define CANT_MAX_ALQUILERES		50
+#define CANT_SOMB_BASE_NORMAL	4
+#define CANT_SOMB_BASE_ESPECIAL	6
 
 /* Variables de uso en main */
 
@@ -37,14 +40,14 @@ typedef enum{
 
 void vInit_Progm (Progm_est *TProgm);
 void vInit_Menu (Menu_est *TMenu);
-void vProgm(Progm_est *TProgm,Menu_est *TMenu,ColeccionAlquiler &lista_);
-void vMenu (Menu_est *TMenu,ColeccionAlquiler &lista_);
+void vProgm(Progm_est *TProgm,Menu_est *TMenu,ColeccionAlquiler &csLista_Sombrilla);
+void vMenu (Menu_est *TMenu,ColeccionAlquiler &csLista_Sombrilla);
 
 /* Variables y funciones realcionadas con la clase Sombrilla */
-void vCrearSombrilla_Normal();
+void vCrearSombrilla_Normal(ColeccionAlquiler &csLista_Sombrilla);
 
 /* Variables y funciones realcionadas con la clase SombrillaEspecial */
-void vCrearSombrilla_Especial();
+void vCrearSombrilla_Especial(ColeccionAlquiler &csLista_Sombrilla);
 
 /* Variables y funciones realcionadas con la clase ColeccionAlquiler */
 uint8_t Cant_Actual_Alquileres = 0;
