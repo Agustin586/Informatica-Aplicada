@@ -15,28 +15,28 @@
 
 class ColeccionAlquiler {
 private:
-	vector <Sombrillas> Lista_Sombrillas;
-	uint8_t cant_total;
-	uint8_t usCantActual_Sombrillas=0;
+	vector <Sombrillas> *Lista_Sombrillas;
+	int cant_total;
+	int usCantActual_Sombrillas=0;
 public:
 	ColeccionAlquiler();
-	ColeccionAlquiler(uint8_t total_somb);	//Inicializa con la cantidad total de sombrillas
+	ColeccionAlquiler(int total_somb);	//Inicializa con la cantidad total de sombrillas
 	virtual ~ColeccionAlquiler();
 
 	void vInsertar(const Sombrillas &MSombrilla);
-	void vEliminar(uint8_t id_, bool especial);
-//	float fTotal_Alquiler(uint8_t min_dias);
+	void vEliminar(int id_, bool especial);
+//	float fTotal_Alquiler(int min_dias);
 	void vMostrar_Lista_Alquiler(void);
 
-	uint8_t getCantTotal() const {
+	int getCantTotal() const {
 		return cant_total;
 	}
 
-	uint8_t getUsCantActualSombrillas() const {
+	int getUsCantActualSombrillas() const {
 		return usCantActual_Sombrillas;
 	}
 
-	void setUsCantActualSombrillas(uint8_t usCantActualSombrillas) {
+	void setUsCantActualSombrillas(int usCantActualSombrillas) {
 		usCantActual_Sombrillas = usCantActualSombrillas;
 	}
 };

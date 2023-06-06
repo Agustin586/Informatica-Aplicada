@@ -9,8 +9,8 @@
 #include "SombrillasEspeciales.h"
 #include "ColeccionAlquiler.h"
 
-uint8_t Sombrillas::costo_fijo = 200;
-uint8_t Sombrillas::costo_extra = 100;
+int Sombrillas::costo_fijo = 200;
+int Sombrillas::costo_extra = 100;
 
 /* Macros de utilidad */
 #define CANT_MAX_DIAS_ALQUILER	30
@@ -50,7 +50,7 @@ void vCrearSombrilla_Normal(ColeccionAlquiler &csLista_Sombrilla);
 void vCrearSombrilla_Especial(ColeccionAlquiler &csLista_Sombrilla);
 
 /* Variables y funciones realcionadas con la clase ColeccionAlquiler */
-uint8_t Cant_Actual_Alquileres = 0;
+int Cant_Actual_Alquileres = 0;
 void vMostrar_ColeccionAlquileres();
 
 

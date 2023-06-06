@@ -15,22 +15,22 @@
 using namespace std;
 
 class Sombrillas {
-private:
-	uint8_t dias;
+protected:
+	int dias;
 	bool estacionamiento;
-	uint8_t id;
+	int id;
 public:
-	static uint8_t Cant_activas;
-	static uint8_t costo_fijo;
-	static uint8_t costo_extra;
+	static int Cant_activas;
+	static int costo_fijo;
+	static int costo_extra;
 	//Construtuctor
 	Sombrillas();
 	Sombrillas(unsigned short dias_, bool est, unsigned short id_);
 	virtual ~Sombrillas();
-	void vMostrardatos_Sombrilla(void);
+	virtual void vMostrardatos_Sombrilla(void) const;
 
 	// Gets y sets
-	uint8_t getDias() const {
+	int getDias() const {
 		return dias;
 	}
 
@@ -38,11 +38,11 @@ public:
 		return estacionamiento;
 	}
 
-	uint8_t getId() const {
+	int getId() const {
 		return id;
 	}
 
-	void setId(uint8_t id) {
+	void setId(int id) {
 		this->id = id;
 	}
 	// ----

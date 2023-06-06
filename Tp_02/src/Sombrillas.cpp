@@ -25,7 +25,8 @@ float Sombrillas::Calculo_costo() const {
 	else return this->dias * this->costo_fijo;
 }
 
-void Sombrillas::vMostrardatos_Sombrilla(void) {
+void Sombrillas::vMostrardatos_Sombrilla(void) const {
+	cout<<"Sombrilla normal"<<endl;
 	cout<<"Id: "<<this->id<<" \t Dias alquilados: "<<this->dias<<" \t Estacionamiento: ";
 	if(this->estacionamiento)	cout<<"Si"<<endl;
 	else						cout<<"No"<<endl;

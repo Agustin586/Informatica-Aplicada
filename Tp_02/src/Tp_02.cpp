@@ -134,7 +134,7 @@ void vMenu (Menu_est *TMenu,ColeccionAlquiler &csLista_Sombrilla){
 }
 
 void vCrearSombrilla_Normal(ColeccionAlquiler &csLista_Sombrilla){
-	uint8_t dias;
+	int dias;
 	bool estacionamiento;
 
 	cout<<"-----------------------------------------------------------"<<endl;
@@ -146,8 +146,6 @@ void vCrearSombrilla_Normal(ColeccionAlquiler &csLista_Sombrilla){
 		cout<<"Ingrese una cantidad de dias menor a: "<<CANT_MAX_DIAS_ALQUILER<<endl;
 		cout<<"Dias de alquiler:"<<endl;
 		cin>>dias;
-
-		cout<<endl<<dias<<endl;
 	}
 
 	cout<<"Estacionamiento:"<<endl;
@@ -198,7 +196,7 @@ void vCrearSombrilla_Especial(ColeccionAlquiler &csLista_Sombrilla){
 	cin>>estacionamiento;
 
 	//Aumentamos la cantidad actual de sombrillas
-	csLista_Sombrilla.setUsCantActualSombrillas(csLista_Sombrilla.getUsCantActualSombrillas()++);
+	csLista_Sombrilla.setUsCantActualSombrillas(csLista_Sombrilla.getUsCantActualSombrillas()+1);
 	cout<<csLista_Sombrilla.getUsCantActualSombrillas();
 
 	//Creamos la sombrilla especial

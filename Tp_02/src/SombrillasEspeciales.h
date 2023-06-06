@@ -12,15 +12,16 @@
 
 class SombrillasEspeciales: public Sombrillas {
 private:
-	uint8_t cant_reposeras;
+	int cant_reposeras;
 public:
 	SombrillasEspeciales();
-	SombrillasEspeciales(uint8_t dias_, bool est, uint8_t id_, uint8_t repo_extras);
+	SombrillasEspeciales(int dias_, bool est, int id_, int repo_extras);
 	virtual ~SombrillasEspeciales();
 
 	virtual float Calculo_costo() const;
+	virtual void vMostrardatos_Sombrilla(void) const;
 
-	uint8_t getCantReposeras() const {
+	int getCantReposeras() const {
 		return cant_reposeras;
 	}
 };

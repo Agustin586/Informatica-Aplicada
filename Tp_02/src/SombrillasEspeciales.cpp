@@ -12,7 +12,7 @@ SombrillasEspeciales::SombrillasEspeciales() {
 
 }
 
-SombrillasEspeciales::SombrillasEspeciales(uint8_t dias_, bool est, uint8_t id_, uint8_t repo_extras) : Sombrillas(dias_,est,id_) {
+SombrillasEspeciales::SombrillasEspeciales(int dias_, bool est, int id_, int repo_extras) : Sombrillas(dias_,est,id_) {
 	this->cant_reposeras = repo_extras;
 }
 
@@ -22,4 +22,12 @@ SombrillasEspeciales::~SombrillasEspeciales() {
 
 float SombrillasEspeciales::Calculo_costo() const {
 	return 1.4 * Sombrillas::Calculo_costo() + (this->cant_reposeras * 0.3333 * Sombrillas::getDias() * Sombrillas::costo_extra);
+}
+
+void SombrillasEspeciales::vMostrardatos_Sombrilla(void) const {
+	cout<<"Sombrilla especial"<<endl;
+	cout<<"Id: "<<this->id<<" \t Dias alquilados: "<<this->dias<<" \t Estacionamiento: ";
+	if(this->estacionamiento)	cout<<"Si";
+	else						cout<<"No";
+	cout<<"\t Cantidad de Reposeras:"<<this->cant_reposeras<<endl;
 }
