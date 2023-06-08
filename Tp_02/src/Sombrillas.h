@@ -23,11 +23,10 @@ public:
 	static int Cant_activas;
 	static int costo_fijo;
 	static int costo_extra;
-	//Construtuctor
+	//Construtuctor y destructor
 	Sombrillas();
-	Sombrillas(unsigned short dias_, bool est, unsigned short id_);
+	Sombrillas(int dias_, bool est, int id_);
 	virtual ~Sombrillas();
-	virtual void vMostrardatos_Sombrilla(void) const;
 
 	// Gets y sets
 	int getDias() const {
@@ -49,6 +48,7 @@ public:
 
 	// Métodos
 	virtual float Calculo_costo() const;
+	virtual void vMostrardatos_Sombrilla(void) const;
 	// ----
 };
 

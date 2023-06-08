@@ -25,9 +25,10 @@ float SombrillasEspeciales::Calculo_costo() const {
 }
 
 void SombrillasEspeciales::vMostrardatos_Sombrilla(void) const {
-	cout<<"Sombrilla especial"<<endl;
-	cout<<"Id: "<<this->id<<" \t Dias alquilados: "<<this->dias<<" \t Estacionamiento: ";
-	if(this->estacionamiento)	cout<<"Si";
-	else						cout<<"No";
-	cout<<"\t Cantidad de Reposeras:"<<this->cant_reposeras<<endl;
+	cout << "Tipo: Especial";
+	cout << "\t Id: " << this->id << " \t Dias alquilados: " << this->dias << " \t Estacionamiento: ";
+	if(this->estacionamiento)	cout << "Si";
+	else						cout << "No";
+	cout << "\t Cantidad de Reposeras: " << this->cant_reposeras;
+	cout << "\t Costo: " << SombrillasEspeciales::Calculo_costo() << endl;
 }

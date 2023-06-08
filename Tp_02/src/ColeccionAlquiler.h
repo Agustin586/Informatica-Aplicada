@@ -8,6 +8,9 @@
 #ifndef COLECCIONALQUILER_H_
 #define COLECCIONALQUILER_H_
 
+#define TIPO_SOMB_NORMAL	0
+#define TIPO_SOMB_ESPECIAL	1
+
 #include <cstdint>
 #include <vector>
 #include <algorithm>
@@ -15,18 +18,19 @@
 
 class ColeccionAlquiler {
 private:
-	vector <Sombrillas> *Lista_Sombrillas;
-	int cant_total;
-	int usCantActual_Sombrillas=0;
+	vector <Sombrillas*> Lista_Sombrillas;	//Definimos un vector polimórfico
+	int cant_total;							//Cantidad total de sombrillas
+	int usCantActual_Sombrillas=0;			//Cantidad actual de sombrillas
 public:
 	ColeccionAlquiler();
 	ColeccionAlquiler(int total_somb);	//Inicializa con la cantidad total de sombrillas
 	virtual ~ColeccionAlquiler();
 
-	void vInsertar(const Sombrillas &MSombrilla);
-	void vEliminar(int id_, bool especial);
-//	float fTotal_Alquiler(int min_dias);
+	void vInsertar(Sombrillas* MSombrilla);
+	void vEliminar(int id_);
+	float fTotalPlazo_Alquiler(int min_dias);
 	void vMostrar_Lista_Alquiler(void);
+	bool bVerificar_Id(int id_);
 
 	int getCantTotal() const {
 		return cant_total;

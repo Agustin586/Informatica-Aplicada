@@ -12,11 +12,11 @@ Sombrillas::Sombrillas() {
 
 }
 
-Sombrillas::Sombrillas(unsigned short dias_, bool est, unsigned short id_): dias(dias_),estacionamiento(est), id(id_){}
+Sombrillas::Sombrillas(int dias_, bool est, int id_): dias(dias_),estacionamiento(est), id(id_){}
 
 Sombrillas::~Sombrillas() {
 	// TODO Auto-generated destructor stub
-	cout<<"Se borró el objeto"<<endl;
+//	cout<<"Se borró el objeto"<<endl;
 }
 
 float Sombrillas::Calculo_costo() const {
@@ -26,8 +26,10 @@ float Sombrillas::Calculo_costo() const {
 }
 
 void Sombrillas::vMostrardatos_Sombrilla(void) const {
-	cout<<"Sombrilla normal"<<endl;
-	cout<<"Id: "<<this->id<<" \t Dias alquilados: "<<this->dias<<" \t Estacionamiento: ";
-	if(this->estacionamiento)	cout<<"Si"<<endl;
-	else						cout<<"No"<<endl;
+	cout << "Tipo: Normal";
+	cout << "\t Id: " << this->id << " \t Dias alquilados: " << this->dias << " \t Estacionamiento: ";
+	if(this->estacionamiento)	cout << "Si";
+	else						cout << "No";
+	cout << "\t Cantidad de Reposeras: 4";
+	cout << "\t Costo: " << Sombrillas::Calculo_costo();
 }
