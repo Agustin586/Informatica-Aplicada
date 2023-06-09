@@ -29,6 +29,6 @@ void SombrillasEspeciales::vMostrardatos_Sombrilla(void) const {
 	cout << "\t Id: " << this->id << " \t Dias alquilados: " << this->dias << " \t Estacionamiento: ";
 	if(this->estacionamiento)	cout << "Si";
 	else						cout << "No";
-	cout << "\t Cantidad de Reposeras: " << this->cant_reposeras;
+	cout << "\t Cantidad de Reposeras: " << this->cant_reposeras+6;
 	cout << "\t Costo: " << SombrillasEspeciales::Calculo_costo() << endl;
 }

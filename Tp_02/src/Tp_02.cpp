@@ -98,34 +98,54 @@ void vMenu (Menu_est *TMenu,ColeccionAlquiler &csLista_Sombrilla){
 		 * el enunciado pero fijense como es. Solamente hay que cambiar la condción del if
 		 * en este y el que sigue abajo. Quiero mis cariñosasss !!!
 		 * */
-		if((csLista_Sombrilla.getUsCantActualSombrillas() + 1) < (csLista_Sombrilla.getCantTotal()))
+		if((csLista_Sombrilla.getUsCantActualSombrillas() + 1) <= (csLista_Sombrilla.getCantTotal())){
 			vCrearSombrilla_Normal(csLista_Sombrilla);
-		else
-			cout<<"No existen sombrillas suficientes."<<endl;
+			csLista_Sombrilla.setUsCantActualSombrillas(csLista_Sombrilla.getUsCantActualSombrillas()+1);
+		}
+		else{
+			cout << "No existen sombrillas suficientes." << endl;
+			cout << "-----------------------------------------------------------" << endl;
+		}
+
+
 	break;
 	}
 	case NUEVA_SOMBRILLA_ESPECIAL:{
-		if((csLista_Sombrilla.getUsCantActualSombrillas() + 1) < (csLista_Sombrilla.getCantTotal()))
+		if((csLista_Sombrilla.getUsCantActualSombrillas() + 1) <= (csLista_Sombrilla.getCantTotal())){
 			vCrearSombrilla_Especial(csLista_Sombrilla);
-		else
-			cout<<"No existen sombrillas suficientes."<<endl;
+			csLista_Sombrilla.setUsCantActualSombrillas(csLista_Sombrilla.getUsCantActualSombrillas()+1);
+		}
+		else{
+			cout << "No existen sombrillas suficientes." << endl;
+			cout << "-----------------------------------------------------------" << endl;
+		}
+
 	break;
 	}
 	case MOSTRAR_LISTA_TOTAL_SOMBRILLAS:{
+		cout << "-----------------------------------------------------------" << endl;
+
 		csLista_Sombrilla.vMostrar_Lista_Alquiler();
+
+		cout << "-----------------------------------------------------------" << endl;
 	break;
 	}
 	case COSTO_PLAZO_DIAS:{
 		int plazo_dias;
 
+		cout << "-----------------------------------------------------------" << endl;
+
 		cout << "Plazo de dias: " << endl;
 		cin >> plazo_dias;
 
 		cout << "Costo: " << csLista_Sombrilla.fTotalPlazo_Alquiler(plazo_dias) << endl << endl;
+
+		cout << "-----------------------------------------------------------" << endl;
 	break;
 	}
 	case BORRAR_SOMBRILLA:{
 		int id;
+		cout << "-----------------------------------------------------------" << endl;
 
 		cout << "Ingrese el Id a borrar:" << endl;
 		cin >> id;
@@ -137,12 +157,15 @@ void vMenu (Menu_est *TMenu,ColeccionAlquiler &csLista_Sombrilla){
 		}
 
 		csLista_Sombrilla.vEliminar(id);
+		csLista_Sombrilla.setUsCantActualSombrillas(csLista_Sombrilla.getUsCantActualSombrillas()-1);
+
 		cout << endl;
+
+		cout << "-----------------------------------------------------------" << endl;
 	break;
 	}
 	case SALIR:{
-		//Deberia llamar a los destructores de todo por las dudas
-		cout<<"Programa finalizado"<<endl;
+		cout << "Programa finalizado" << endl;
 		csLista_Sombrilla.~ColeccionAlquiler();
 
 	break;
@@ -178,18 +201,15 @@ void vCrearSombrilla_Normal(ColeccionAlquiler &csLista_Sombrilla){
 		cin >> dias;
 	}
 
-	cout<<"Estacionamiento:"<<endl;
-	cout<<"1:Si \t 0:No"<<endl;
-	cin>>estacionamiento;
+	cout << "Estacionamiento:" << endl;
+	cout << "1:Si \t 0:No" << endl;
+	cin >> estacionamiento;
 
 	//Creamos un objeto de tipo sombrilla normal
 	Sombrillas *Somb_Norm = new Sombrillas(dias,estacionamiento,id_somb);
 
 	//Insertamos dicho objeto en nuestro vector polimórfico
 	csLista_Sombrilla.vInsertar(Somb_Norm);
-
-	//Mostramos si se cargó
-	csLista_Sombrilla.vMostrar_Lista_Alquiler();
 
 	cout<<"-----------------------------------------------------------"<<endl;
 
@@ -201,10 +221,10 @@ void vCrearSombrilla_Especial(ColeccionAlquiler &csLista_Sombrilla){
 	unsigned short usRepo_extras,dias;
 	bool estacionamiento;
 
-	cout<<"-----------------------------------------------------------"<<endl;
+	cout << "-----------------------------------------------------------" << endl;
 	//Ingresa el id de la sombrilla
-	cout<<"Id Sombrilla:"<<endl;
-	cin>>id_somb;
+	cout << "Id Sombrilla:" << endl;
+	cin >> id_somb;
 
 	//Debe verificar que esa id no se encuentre ya cargada
 	while(bVerificar_Id_Somb(csLista_Sombrilla,id_somb)){
@@ -212,32 +232,30 @@ void vCrearSombrilla_Especial(ColeccionAlquiler &csLista_Sombrilla){
 		cin >> id_somb;
 	}
 
-	cout<<"Dias de alquiler:"<<endl;
-	cin>>dias;
+	//Cargamos la cantidad de dias
+	cout << "Dias de alquiler:" << endl;
+	cin >> dias;
 
 	while(dias > CANT_MAX_DIAS_ALQUILER){
-		cout<<"Ingrese una cantidad de dias menor a: "<<CANT_MAX_DIAS_ALQUILER<<endl;
-		cout<<"Dias de alquiler:"<<endl;
-		cin>>dias;
+		cout << "Ingrese una cantidad de dias menor a: " << CANT_MAX_DIAS_ALQUILER << endl;
+		cout << "Dias de alquiler:" << endl;
+		cin >> dias;
 
-		cout<<endl<<dias<<endl;
+		cout << endl << dias << endl;
 	}
 
-	cout<<"Estacionamiento:"<<endl;
-	cout<<"1:Si \t 0:No"<<endl;
-	cin>>estacionamiento;
+	cout << "Estacionamiento:" << endl;
+	cout << "1:Si \t 0:No" << endl;
+	cin >> estacionamiento;
 
-	cout<<"Ingrese la cantidad de reposeras extras:"<<endl;
-	cin>>usRepo_extras;
+	cout << "Ingrese la cantidad de reposeras extras:" << endl;
+	cin >> usRepo_extras;
 
 	//Creamos la sombrilla especial
 	SombrillasEspeciales* SombEspecial = new SombrillasEspeciales(dias,estacionamiento,id_somb,usRepo_extras);
 
 	//Insertamos dicho objeto en nuestro vector polimórfico
 	csLista_Sombrilla.vInsertar(SombEspecial);
-
-	//Mostramos si se cargó
-	csLista_Sombrilla.vMostrar_Lista_Alquiler();
 
 	return;
 }

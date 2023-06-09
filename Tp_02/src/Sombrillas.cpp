@@ -21,7 +21,7 @@ Sombrillas::~Sombrillas() {
 
 float Sombrillas::Calculo_costo() const {
 	if(this->estacionamiento)
-		return this->dias * this->costo_fijo + (this->dias * this->costo_extra);
+		return this->dias * this->costo_fijo + (this->dias * (this->costo_extra + this->costo_fijo));
 	else return this->dias * this->costo_fijo;
 }
 

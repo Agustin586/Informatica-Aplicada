@@ -28,7 +28,7 @@ void ColeccionAlquiler::vInsertar(Sombrillas* MSombrilla) {
 
 void ColeccionAlquiler::vEliminar(int id_) {
 	for(unsigned int i=0;i<Lista_Sombrillas.size();i++){
-		if(Lista_Sombrillas.at(i)->getId()==id_)	Lista_Sombrillas.erase(Lista_Sombrillas.begin()+i);	//Borra el que se encuentra en la posicion i
+		if(Lista_Sombrillas.at(i)->getId()==id_)	delete(Lista_Sombrillas[i]),Lista_Sombrillas.erase(Lista_Sombrillas.begin()+i);	//Borra el que se encuentra en la posicion i
 	}
 }
 
@@ -36,7 +36,7 @@ float ColeccionAlquiler::fTotalPlazo_Alquiler(int min_dias) {
 	float sumador=0;
 
 	for(unsigned int i=0;i<Lista_Sombrillas.size();i++){
-		if(min_dias >= Lista_Sombrillas[i]->getDias()){
+		if(Lista_Sombrillas[i]->getDias() >= min_dias){
 			SombrillasEspeciales* Somb_especial = dynamic_cast <SombrillasEspeciales*> (Lista_Sombrillas[i]);
 			if(Somb_especial)
 				sumador += Somb_especial->Calculo_costo();
