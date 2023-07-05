@@ -3,18 +3,20 @@
 
 /* Definiciones */
 #define T_MIN		900000
-#define SENSOR		!(PTC->PDIR&(1<<3))
-#define V_ON		PTE->PCOR |= (1<<29);
+#define SENSOR1		!(PTC->PDIR&(1<<3))
+#define SENSOR2		!(PTC->PDIR&(1<<12))
+#define V_ON		PTE->PCOR |= (1<<29);	// Rojo
 #define V_OFF		PTE->PSOR |= (1<<29);
-#define V_TOGGLE	PTE->PTOR |= (1<<29);
+#define ENABLE_ON	PTD->PCOR |= (1<<5);	// Verde
+#define ENABLE_OFF  PTD->PSOR |= (1<<5);
 #define TEMP_MAX	1000000
 #define DELAY		50000
 
 /* Variables */
 typedef enum{
 	est_INIT,
-	est_SENSOR1,
-	est_SENSOR2
+	est_ENABLE_ON,
+	est_INFRACCION
 }Mef_est;
 
 /*
@@ -24,7 +26,6 @@ void vInit(void);
 void vMef_Init(Mef_est* estado);
 void vMef(Mef_est* estado,int* Temp,int* Delay,bool* Bandera1);
 void vEst_Sensor1(int* Temp,int* Delay,bool* Bandera);
-void vEst_Sensor2(int* Temp,int* Delay,bool* Bandera);
 void vAntirrebote(int* Delay,bool* Bandera);
 
 #endif /* INICIALIZACION_H_ */

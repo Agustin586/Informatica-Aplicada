@@ -69,17 +69,33 @@ void vInit(void) {
 	PTE->PDDR |= 1<<29;					// Setea como salida el led rojo
 	PTE->PSOR |= (1<<29);				// Limpia el pin antes de activarlo
 
+	// Verde
+	SIM->SCGC5 |= 1<<12;
+	PORTD->PCR[5] |= 1<<8;
+	PTD->PDDR |= 1<<5;
+	PTD->PSOR |= 1<<5;
+
+	// Pulsador 1
 	SIM->SCGC5 |= (1<<11);
 	PORTC->PCR[3] |= (1<<8);
 	PTC->PDDR &= ~(1<<3);				// Configura como entrada
 	PORTC->PCR[3] |= (1<<1);			// Habilita la resistencia pull up en PE
 	PORTC->PCR[3] |= (1<<0);			// Selecciona la pull up
 
+	// Pulsador 2
+	PORTC->PCR[12] |= (1<<8);			// Modo gpio
+	PTC->PDDR &= ~(1<<12);				// Configura como entrada
+	PORTC->PCR[12] |= (1<<1);			// Habilita la resistencia pull up en PE
+	PORTC->PCR[12] |= (1<<0);			// Selecciona la pull up
+
 	return;
 }
 
 void vMef_Init(Mef_est* estado) {
 	*estado = est_INIT;
+
+	V_OFF			// Apaga led rojo
+	ENABLE_OFF		// Apaga led verde
 
 	return;
 }
@@ -88,30 +104,38 @@ void vMef(Mef_est* estado,int* Temp,int* Delay,bool* Bandera1) {
 	switch(*estado){
 		case est_INIT:
 		{
-			V_OFF
-			(*Temp) = TEMP_MAX;
+			(*Temp) = TEMP_MAX;	// Temporizador de velocidad
 			*Bandera1 = false;
-			(*Delay) = DELAY;
+			(*Delay) = DELAY;	// Temporizador para rebote de pulsadores
 
-			if(SENSOR)	*estado = est_SENSOR1;
+			// Transición
+			if(SENSOR1)	*estado = est_ENABLE_ON,ENABLE_ON;
 			break;
 		}
-		case est_SENSOR1:
+		case est_ENABLE_ON:
 		{
 			vEst_Sensor1(Temp,Delay,Bandera1);
 
-			if((*Bandera1) && SENSOR) {
-				*estado = est_SENSOR2;
-				(*Bandera1) = !(*Bandera1);
-				(*Delay) = DELAY;
+			if(!(*Temp))	*estado = est_INIT,ENABLE_OFF;	// Si finaliza el temporizador
+			if((*Bandera1) && SENSOR2) {
+				*estado = est_INFRACCION;
+				(*Bandera1) = !(*Bandera1);	// Limpia la bandera en false
+				(*Delay) = DELAY;			// Carga el delay
+				V_ON;
 			}
 			break;
 		}
-		case est_SENSOR2:
+		case est_INFRACCION:
 		{
-			vEst_Sensor2(Temp,Delay,Bandera1);
+			vAntirrebote(Delay,Bandera1);	// Espera un tiempo
 
-			if(!SENSOR) *estado = est_INIT,!(*Bandera1);
+			if(!SENSOR2 && (*Bandera1)){
+				*estado = est_INIT;
+				(*Bandera1) = !(*Bandera1);
+				V_OFF;
+				ENABLE_OFF;
+			}
+
 			break;
 		}
 		default:
@@ -128,20 +152,7 @@ void vEst_Sensor1(int* Temp,int* Delay,bool* Bandera) {
 		(*Temp)--;
 	}
 	else {
-		V_TOGGLE
-	}
 
-	vAntirrebote(Delay,Bandera);
-
-	return;
-}
-
-void vEst_Sensor2(int* Temp,int* Delay,bool* Bandera) {
-	if((*Temp) > T_MIN) {
-		V_ON
-	}
-	else {
-		V_OFF
 	}
 
 	vAntirrebote(Delay,Bandera);
