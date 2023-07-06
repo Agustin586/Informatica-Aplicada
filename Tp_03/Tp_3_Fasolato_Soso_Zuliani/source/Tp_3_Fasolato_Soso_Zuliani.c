@@ -117,10 +117,8 @@ void vMef(Mef_est* estado,int* Temp,int* Delay,bool* Bandera1) {
 			vEst_Sensor1(Temp,Delay,Bandera1);
 
 			if(!(*Temp))	*estado = est_INIT,ENABLE_OFF;	// Si finaliza el temporizador
-			if((*Bandera1) && SENSOR2) {
+			if(SENSOR2) {
 				*estado = est_INFRACCION;
-				(*Bandera1) = !(*Bandera1);	// Limpia la bandera en false
-				(*Delay) = DELAY;			// Carga el delay
 				V_ON;
 			}
 			break;
@@ -131,7 +129,6 @@ void vMef(Mef_est* estado,int* Temp,int* Delay,bool* Bandera1) {
 
 			if(!SENSOR2 && (*Bandera1)){
 				*estado = est_INIT;
-				(*Bandera1) = !(*Bandera1);
 				V_OFF;
 				ENABLE_OFF;
 			}
@@ -151,11 +148,6 @@ void vEst_Sensor1(int* Temp,int* Delay,bool* Bandera) {
 	if(*Temp != 0) {
 		(*Temp)--;
 	}
-	else {
-
-	}
-
-	vAntirrebote(Delay,Bandera);
 
 	return;
 }
@@ -163,7 +155,7 @@ void vEst_Sensor1(int* Temp,int* Delay,bool* Bandera) {
 void vAntirrebote(int* Delay,bool* Bandera) {
 	if((*Delay) != 0 && !(*Bandera))	(*Delay)--;
 	else {
-		(*Bandera) = !(*Bandera);
+		(*Bandera) = true;
 	}
 
 	return;
